@@ -1,0 +1,46 @@
+1.The  IP  address  of  FT  and  the  port  number  on  which  the  application  is  running should be public, i.e., 
+    users should know the IP address and port number of FT.
+
+
+2.When a peer A connects to FT, A should automatically send information about its shared files (up to 5 files) as a 
+    list of records to FT in the following format:<filename, file type (e.g., text, jpg, etc), file size, file last modified date (DD/MM/YY),IP address, port number>.
+    A should send “HELLO” and receive “HI” before sending the information.
+
+!!!! 3.if A does not send any file information to FT while joing the system, i.e., if A does not share any file, then FT should not accept A.  FT should not respond to A
+
+4.Only accepted peers should be able to use the services offered by this system.
+
+5.When A wants to download a file with the name “File Name”, A requests the file from FT by sending “SEARCH: ” + “File Name”.
+
+6.When FT receives “SEARCH: ” + “File Name”, it tries to find the file in a hash table where  
+    ‘key’  is  filename  and  ‘value’  is  a  list  which  contains  records  of  
+    this format:<file type, file size, file last modified date (DD/MM/YY), IP address, portnumber>.
+    
+    
+    –If FT finds the file, it should send “FOUND: ” + list of records.
+    –If FT does not find the file, it should send “NOT FOUND”.
+
+
+
+In the system, FileTracker FT, should always be on and waiting for others’ (peers) requests.
+FT  should  contain information  about  the  files which  are  shared  by online peers  and information  about  the  online  peers. 
+
+If a peer A wants to download a file X, A asks FT to send information about the online peers that share X.  
+
+If there exist peers that share X, FT sends information about these peers and about files to A.
+
+Note that different files with the same name may exist (difference could be in size, type, etc.).
+A connects to one of the peers that it has received from FT and may download X from that peer.
+
+
+
+7.After receiving a list of records, A should choose one of the peers (records) from the list, 
+    say B, and connect to B(using IP and port number) to request and download the file.  For that A should send “DOWNLOAD: ” + “FileName, type, size” to B.
+
+
+8. When B receives a “DOWNLOAD” message from A, it should send “FILE: ”+file to A
+
+9. When A wants to leave the system, A should notify FT about this so that FT can update the list of online users. A should send “BYE” to FT to do so.
+
+10.Every client has to have a folder, say 'SharedP2P', where you put the files that you want to share.
+    When your application starts, it should read that folder and send required info about the files to the server.
